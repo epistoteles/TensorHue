@@ -15,12 +15,24 @@
   <a href="#%EF%B8%8F-license">License</a>
 </p>
 
-# TensorHue - tensors, visualized
+## TensorHue - tensors, visualized
 
-TensorHue is a library that allows you to visualize tensors in your terminal, making understanding and debugging tensor contents easier.
+TensorHue is a Python library that allows you to visualize tensors in your terminal, making understanding and debugging tensor contents easier.
 
 You can use it with your favorite tensor processing libraries, such as PyTorch, JAX, and TensorFlow.
 
-## Key Features
+## Getting started
 
-TODO
+Using TensorHue is easy, simply import TensorHue after importing the relevant library:
+
+```python
+import torch
+import tensorhue
+```
+
+That's it! You can now vizualize any tensor by calling .viz():
+
+```python
+t = torch.FloatTensor(20,20)
+t.viz()
+```
