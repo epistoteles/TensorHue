@@ -10,14 +10,14 @@ __all__ = [
     "setup"
 ]
 
-def viz(self):
+def viz(self) -> None:
     if isinstance(self, torch.FloatTensor):
         _viz_Tensor(self, COLORS['default_dark'], COLORS['default_bright'])
     elif isinstance(self, torch.BoolTensor):
         _viz_Tensor(self, COLORS['false'], COLORS['true'])
 
 
-def _viz_Tensor(self, colors = None):
+def _viz_Tensor(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
     data = self.data.numpy()
     shape = data.shape
     color_a = np.array(color_a)
