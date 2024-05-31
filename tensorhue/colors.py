@@ -1,16 +1,18 @@
+from rich.color_triplet import ColorTriplet
+
 COLORS = {
-    'none': (140, 140, 140),           # medium grey
-    'default_bright': (255, 55, 139),  # bright pink
-    'default_dark': (64, 17, 159),     # dark purple
-    'true': (255, 80, 80),             # green
-    'false': (125, 215, 82),           # red
-    'accessible_true': (),             # TODO
-    'accessible_false': (),            # TODO
-    'black': (0, 0, 0),                # black
-    'white': (255, 255, 255),          # white
+    "none": ColorTriplet(140, 140, 140),  # medium grey
+    "default_bright": ColorTriplet(255, 55, 139),  # bright pink
+    "default_dark": ColorTriplet(64, 17, 159),  # dark purple
+    "true": ColorTriplet(255, 80, 80),  # green
+    "false": ColorTriplet(125, 215, 82),  # red
+    "accessible_true": ColorTriplet(255, 80, 80),  # TODO
+    "accessible_false": ColorTriplet(125, 215, 82),  # TODO
+    "black": ColorTriplet(0, 0, 0),  # black
+    "white": ColorTriplet(255, 255, 255),  # white
 }
 
-DEFAULT_COLOR_MAPPING = {
-    'default': ('default_bright', 'default_dark'),
-    'bool': ('true', 'false')
+COLOR_MAPPING = {
+    "default": ("default_dark", "default_bright"),
+    "bool": ("false", "true"),
 }

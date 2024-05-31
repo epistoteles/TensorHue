@@ -6,7 +6,7 @@ class __PrinterOptions:
     threshold: float = 1000
     edgeitems: int = 3
     linewidth: int = 120
-    colorscheme: str = 'default'
+    colorscheme: str = "default"
 
 
 PRINT_OPTS = __PrinterOptions()
@@ -39,21 +39,20 @@ def set_printoptions(
     """
 
     if threshold is not None:
-        assert type(threshold) == int
+        assert isinstance(threshold, int)
         PRINT_OPTS.threshold = threshold
     if edgeitems is not None:
-        assert type(edgeitems) == int
+        assert isinstance(edgeitems, int)
         PRINT_OPTS.edgeitems = edgeitems
     if linewidth is not None:
-        assert type(linewidth) == int
+        assert isinstance(linewidth, int)
         PRINT_OPTS.linewidth = linewidth
     if colorscheme is not None:
-        assert colorscheme in ['default', 'accessible']
+        assert colorscheme in {"default", "accessible"}
         PRINT_OPTS.colorscheme = colorscheme
-    
 
 
-def get_printoptions() -> Dict[str, Any]:
+def get_printoptions() -> dict[str, any]:
     r"""Gets the current options for printing, as a dictionary that
     can be passed as ``**kwargs`` to set_printoptions().
     """

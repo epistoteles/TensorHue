@@ -6,17 +6,36 @@ from tensorhue.colors import COLORS
 
 __version__ = VERSION
 
-__all__ = ["set_printoptions", "setup"]
+__all__ = []
 
 
 def viz(self) -> None:
+    """
+    Prints the tensor using a colored Unicode art representation.
+    This method checks the type of the tensor and calls the `_viz_tensor` function with the appropriate colors.
+    """
     if isinstance(self, torch.FloatTensor):
-        _viz_Tensor(self, COLORS["default_dark"], COLORS["default_bright"])
+        _viz_tensor(self)
     elif isinstance(self, torch.BoolTensor):
-        _viz_Tensor(self, COLORS["false"], COLORS["true"])
+        _viz_tensor(self, (COLORS["false"], COLORS["true"]))
 
 
-def _viz_Tensor(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
+def _viz_tensor(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
+    """
+    Prints a tensor using colored Unicode art representation.
+
+    This function takes a tensor and a tuple of two tuples of integers representing the colors.
+    It converts the tensor data to a numpy array, calculates the colors for each element based on the input colors,
+    and generates a string representation of the tensor using the calculated colors.
+    The resulting string is then printed using the Console class from the rich library.
+
+    Parameters:
+        colors (tuple[tuple[int], tuple[int]]): A tuple of two RGB tuples representing the colors.
+            The first tuple represents the RGB color for the smallest value in the tensor, the second tuple represents
+            the RGB color for the biggest value of the tensor. (Default = None; uses default colors)
+    """
+    if colors is None:
+        colors = COLORS["default_dark"], COLORS["default_bright"]
     data = self.data.numpy()
     shape = data.shape
     color_a = np.array(colors[0])
