@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/epistoteles/tensorhue/.github/tensorhue.png" alt="TensorHue" width="400">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/tensorhue.png" alt="TensorHue" width="1152">
 </div>
 
 <h4 align="center">Snapping back at hate speech</h4>
