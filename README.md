@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-  <img src="https://img.shields.io/badge/python->=v3.9-blue.svg">
+  <img src="https://img.shields.io/badge/python-≥v3.9-blue.svg">
   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg">
 </div>
 
