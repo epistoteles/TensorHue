@@ -14,7 +14,9 @@ def viz(self) -> None:
     Prints the tensor using a colored Unicode art representation.
     This method checks the type of the tensor and calls the `_viz_tensor` function with the appropriate colors.
     """
-    if isinstance(self, torch.FloatTensor):
+    if isinstance(
+        self, torch.FloatTensor
+    ):  # pylint: disable=possibly-used-before-assignment
         _viz_tensor(self)
     elif isinstance(self, torch.BoolTensor):
         _viz_tensor(self, (COLORS["false"], COLORS["true"]))

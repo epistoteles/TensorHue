@@ -12,7 +12,7 @@ COLORS = {
     "white": ColorTriplet(255, 255, 255),  # white
 }
 
-COLOR_MAPPING = {
+COLOR_MAPPING = {  # pylint: disable=consider-using-namedtuple-or-dataclass
     "default": ("default_dark", "default_bright"),
     "bool": ("false", "true"),
 }
