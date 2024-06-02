@@ -4,6 +4,7 @@
 
 <div align="center">
   <img src="https://img.shields.io/badge/python-≥3.9-blue.svg">
+  <img src="https://img.shields.io/pypi/dm/tensorhue">
   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg">
 </div>
 
