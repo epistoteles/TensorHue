@@ -2,3 +2,8 @@
 pre-commit
 pylint
 torch
+tox
+pytest
+pytest-cov
+mypy
+flake8
