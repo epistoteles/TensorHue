@@ -5,7 +5,7 @@ import dataclasses
 class __PrinterOptions:
     threshold: float = 1000
     edgeitems: int = 3
-    linewidth: int = 120
+    linewidth: int = 200
     colorscheme: str = "default"
 
 

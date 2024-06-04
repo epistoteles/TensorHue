@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
+from collections.abc import Iterator
 from rich.color_triplet import ColorTriplet
 import numpy as np
 from numpy.typing import NDArray
-from typing import Tuple, List, Union, Any, Iterator
 from scipy.interpolate import interp1d
 
 
@@ -22,7 +24,7 @@ COLORS = {
 
 @dataclass
 class ColorGradient:
-    gradient: List[Tuple[float, ColorTriplet]] = field(
+    gradient: list[tuple[float, ColorTriplet]] = field(
         default_factory=lambda: [
             (0.0, COLORS["default_dark"]),
             (0.7, COLORS["default_medium"]),
@@ -45,7 +47,7 @@ class ColorGradient:
             raise ValueError("ColorGradient positions must be between 0.0 and 1.0")
         self.gradient = sorted(self.gradient, key=lambda x: x[0])
 
-    def __iter__(self) -> Iterator[Tuple[float, ColorTriplet]]:
+    def __iter__(self) -> Iterator[tuple[float, ColorTriplet]]:
         return iter(self.gradient)
 
 
@@ -59,8 +61,8 @@ class ColorScheme:
     ninf_color: ColorTriplet = field(default_factory=lambda: COLORS["black"])
 
     def calculate_gradient_color_vectorized(
-        self, value_array: Union[NDArray[np.number], NDArray[bool]]
-    ) -> Union[NDArray[np.uint8], Any]:
+        self, value_array: NDArray[np.number] | NDArray[bool]
+    ) -> NDArray[np.uint8] | any:
         """
         Calculate the gradient color for each value in the input array using vectorized interpolation.
 
