@@ -27,6 +27,12 @@ TensorHue automagically detects which kind of tensor you are visualizing and adj
 
 ## Getting started
 
+Install TensorHue with pip:
+
+```bash
+pip install tensorhue
+```
+
 Using TensorHue is easy, simply import TensorHue *after* importing the library of your choice:
 
 ```python
