@@ -9,15 +9,10 @@
   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg">
 </div>
 
-<p align="center">
-  <a href="#-key-features">Key Features</a> •
-  <a href="#-how-to-use">How To Use</a> •
-  <a href="#-components">Components</a> •
-  <a href="#-contributors">Contributors</a> •
-  <a href="#%EF%B8%8F-license">License</a>
-</p>
+> [!WARNING]
+> TensorHue is currently in Pre-Alpha. We appreciate any feedback!
 
-## TensorHue - tensors, visualized
+# TensorHue - tensors, visualized
 
 TensorHue is a Python library that allows you to visualize tensors right in your console, making understanding and debugging tensor contents easier.
 
