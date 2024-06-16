@@ -20,7 +20,11 @@
 
 TensorHue is a Python library that allows you to visualize tensors right in your console, making understanding and debugging tensor contents easier.
 
-You can use it with your favorite tensor processing libraries, such as PyTorch, JAX, and TensorFlow.
+You can use it with your favorite tensor processing libraries, such as PyTorch, JAX*, and TensorFlow*.  _*coming soon_
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/tensor_types.png" alt="tensor types" width="1152">
+</div>
 
 ## Getting started
 
@@ -31,14 +35,25 @@ import torch
 import tensorhue
 ```
 
-That's it! You can now vizualize any tensor by calling .viz() in your Python console:
+That's it! You can now visualize any tensor by calling .viz() on it in your Python console:
 
 ```python
 t = torch.rand(20,20)
-t.viz()
+t.viz() ✅
 ```
 
+You can also visualize them like this:
 
+```python
+tensorhue.viz(t) ✅
+```
+
+Numpy arrays can only be visualized with `tensorhue.viz(...)` (because np.array is immutable):
+
+```python
+np.array([1,2,3]).viz() ❌
+tensorhue.viz(np.array([1,2,3])) ✅
+```
 ## Custom colors
 
 You can pass along your own ColorScheme when visualizing a specific tensor:
