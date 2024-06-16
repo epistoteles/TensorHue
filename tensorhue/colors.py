@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from collections.abc import Iterator
 from rich.color_triplet import ColorTriplet
 import numpy as np
-from numpy.typing import NDArray
-from scipy.interpolate import interp1d
+from matplotlib import colormaps
+from matplotlib.colors import Colormap, Normalize
 
 
 COLORS = {
@@ -13,8 +12,8 @@ COLORS = {
     "default_dark": ColorTriplet(64, 17, 159),  # dark purple
     "default_medium": ColorTriplet(255, 55, 140),  # pink
     "default_bright": ColorTriplet(255, 210, 240),  # light rose
-    "true": ColorTriplet(255, 80, 80),  # green
-    "false": ColorTriplet(125, 215, 82),  # red
+    "true": ColorTriplet(125, 215, 82),  # green
+    "false": ColorTriplet(255, 80, 80),  # red
     "accessible_true": ColorTriplet(255, 80, 80),  # TODO
     "accessible_false": ColorTriplet(125, 215, 82),  # TODO
     "black": ColorTriplet(0, 0, 0),  # black
@@ -23,58 +22,63 @@ COLORS = {
 
 
 @dataclass
-class ColorGradient:
-    gradient: list[tuple[float, ColorTriplet]] = field(
-        default_factory=lambda: [
-            (0.0, COLORS["default_dark"]),
-            (0.7, COLORS["default_medium"]),
-            (1.0, COLORS["default_bright"]),
-        ]
-    )
-
-    def __post_init__(self):
-        if len(self.gradient) < 2:
-            raise ValueError("ColorGradient must have at least 2 points")
-        self.gradient = [(float(pos), color) for pos, color in self.gradient]
-        pos_values = [pos for pos, _ in self.gradient]
-        if len(set(pos_values)) != len(pos_values):
-            raise ValueError("ColorGradient must have unique position values")
-        if 0.0 not in pos_values:
-            raise ValueError("ColorGradient must include a color for position 0.0")
-        if 1.0 not in pos_values:
-            raise ValueError("ColorGradient must include a color for position 1.0")
-        if max(pos_values) > 1.0 or min(pos_values) < 0.0:
-            raise ValueError("ColorGradient positions must be between 0.0 and 1.0")
-        self.gradient = sorted(self.gradient, key=lambda x: x[0])
-
-    def __iter__(self) -> Iterator[tuple[float, ColorTriplet]]:
-        return iter(self.gradient)
-
-
-@dataclass
 class ColorScheme:
-    gradient: ColorGradient = field(default_factory=ColorGradient)
-    masked_color: ColorTriplet = field(default_factory=lambda: COLORS["masked"])
+    _colormap: Colormap = field(default_factory=lambda: colormaps["magma"])
+    normalize: Normalize = field(default_factory=Normalize)
+    _masked_color: ColorTriplet = field(default_factory=lambda: COLORS["masked"])
     true_color: ColorTriplet = field(default_factory=lambda: COLORS["true"])
     false_color: ColorTriplet = field(default_factory=lambda: COLORS["false"])
-    inf_color: ColorTriplet = field(default_factory=lambda: COLORS["white"])
-    ninf_color: ColorTriplet = field(default_factory=lambda: COLORS["black"])
+    _inf_color: ColorTriplet = field(default_factory=lambda: COLORS["white"])
+    _ninf_color: ColorTriplet = field(default_factory=lambda: COLORS["black"])
 
-    def calculate_gradient_color_vectorized(
-        self, value_array: NDArray[np.number] | NDArray[bool]
-    ) -> NDArray[np.uint8] | any:
-        """
-        Calculate the gradient color for each value in the input array using vectorized interpolation.
+    @property
+    def colormap(self):
+        return self._colormap
 
-        Args:
-            value_array (NDArray[np.float64]): The input array of values.
+    @colormap.setter
+    def colormap(self, value):
+        self._colormap = value
+        self._colormap.set_extreme(bad=self._masked_color, under=self._ninf_color, over=self._inf_color)
 
-        Returns:
-            Union[Any, NDArray[np.uint8]]: The calculated gradient color for each value in the input array.
-        """
-        positions = [pos for pos, _ in self.gradient]
-        color_data = np.array([[color.red, color.green, color.blue] for _, color in self.gradient])
-        interp_functions = [interp1d(positions, channel) for channel in color_data.T]
-        flat_values = value_array.flatten()
-        interpolated_colors = np.stack([func(flat_values) for func in interp_functions], axis=0)
-        return interpolated_colors.reshape((3,) + value_array.shape).astype(np.uint8)
+    @property
+    def masked_color(self):
+        return self._masked_color
+
+    @masked_color.setter
+    def masked_color(self, value):
+        self._masked_color = value
+        self._colormap.set_bad(value)
+
+    @property
+    def inf_color(self):
+        return self._inf_color
+
+    @inf_color.setter
+    def inf_color(self, value):
+        self._inf_color = value
+        self._colormap.set_over(value)
+
+    @property
+    def ninf_color(self):
+        return self._ninf_color
+
+    @ninf_color.setter
+    def ninf_color(self, value):
+        self._ninf_color = value
+        self._colormap.set_under(value)
+
+    def __call__(self, data: np.ndarray) -> np.ndarray:
+        return self.colormap(self.normalize(data), bytes=True)
+
+    def __repr__(self):
+        return (
+            f"ColorScheme(\n"
+            f"    colormap={self.colormap},\n"
+            f"    normalize={self.normalize},\n"
+            f"    masked_color={self._masked_color},\n"
+            f"    true_color={self.true_color},\n"
+            f"    false_color={self.false_color},\n"
+            f"    inf_color={self._inf_color},\n"
+            f"    ninf_color={self._ninf_color}\n"
+            f")"
+        )

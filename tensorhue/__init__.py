@@ -1,25 +1,27 @@
 import sys
 from rich.console import Console
 import numpy as np
-from tensorhue.colors import COLORS
+from tensorhue.colors import COLORS, ColorScheme
+from tensorhue._print_opts import PRINT_OPTS, set_printoptions
+
 
 __version__ = "0.0.2"  # single source of version truth
 
-__all__ = []
+__all__ = ["set_printoptions"]
 
 
-def viz(self) -> None:
-    """
-    Prints the tensor using a colored Unicode art representation.
-    This method checks the type of the tensor and calls the `_viz_tensor` function with the appropriate colors.
-    """
-    if isinstance(self, torch.FloatTensor):  # pylint: disable=possibly-used-before-assignment
-        _viz_tensor(self)
-    elif isinstance(self, torch.BoolTensor):
-        _viz_tensor(self, (COLORS["false"], COLORS["true"]))
+# def viz(self) -> None:
+#     """
+#     Prints the tensor using a colored Unicode art representation.
+#     This method checks the type of the tensor and calls the `_viz_tensor` function with the appropriate colors.
+#     """
+#     if isinstance(self, (torch.FloatTensor, torch.IntTensor, torch.LongTensor)):  # pylint: disable=possibly-used-before-assignment
+#         _viz_tensor(self)
+#     elif isinstance(self, torch.BoolTensor):
+#         _viz_tensor(self, (COLORS["false"], COLORS["true"]))
 
 
-def _viz_tensor(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
+def viz(self, colorscheme: ColorScheme = None) -> None:
     """
     Prints a tensor using colored Unicode art representation.
 
@@ -33,59 +35,31 @@ def _viz_tensor(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
             The first tuple represents the RGB color for the smallest value in the tensor, the second tuple represents
             the RGB color for the biggest value of the tensor. (Default = None; uses default colors)
     """
-    if colors is None:
-        colors = COLORS["default_dark"], COLORS["default_bright"]
+    if colorscheme is None:
+        colorscheme = PRINT_OPTS.colorscheme
+
     data = self.data.numpy()
     shape = data.shape
-    color_a = np.array(colors[0])
-    color_b = np.array(colors[1])
-    color = ((1 - data[::2, :, None]) * color_a + data[::2, :, None] * color_b).astype(int)
-    bgcolor = ((1 - data[1::2, :, None]) * color_a + data[1::2, :, None] * color_b).astype(int)
 
-    result_parts = []
-    for y in range(shape[0] // 2):
-        for x in range(shape[1]):
-            result_parts.append(
-                f"[rgb({color[y, x, 0]},{color[y, x, 1]},{color[y, x, 2]}) on rgb({bgcolor[y, x, 0]},{bgcolor[y, x, 1]},{bgcolor[y, x, 2]})]▀[/]"
-            )
-        result_parts.append("\n")
+    colors = colorscheme(data)[..., :3]
+
+    result_lines = [""]
+    for y in range(0, shape[0] - 1, 2):
+        for x in range(shape[-1]):
+            result_lines[
+                -1
+            ] += f"[rgb({colors[y, x, 0]},{colors[y, x, 1]},{colors[y, x, 2]}) on rgb({colors[y+1, x, 0]},{colors[y+1, x, 1]},{colors[y+1, x, 2]})]▀[/]"
+        result_lines.append("")
+
     if shape[0] % 2 == 1:
         for x in range(shape[1]):
-            result_parts.append(f"[rgb({color[-1, x, 0]},{color[-1, x, 1]},{color[-1, x, 2]})]▀[/]")
+            result_lines[-1] += f"[rgb({colors[-1, x, 0]},{colors[-1, x, 1]},{colors[-1, x, 2]})]▀[/]"
 
     c = Console(log_path=False, record=False)
-    c.print("".join(result_parts))
-    return "".join(result_parts)
+    c.print("\n".join(result_lines))
 
 
 # automagically set up TensorHue
 if "torch" in sys.modules:
     torch = sys.modules["torch"]
     setattr(torch.Tensor, "viz", viz)
-
-
-# def _viz_tensor_alt(self, colors: tuple[tuple[int], tuple[int]] = None) -> None:
-#     if colors is None:
-#         colors = COLORS["default_dark"], COLORS["default_bright"]
-#     data = self.data.numpy()
-#     shape = data.shape
-#     dim = data.ndim
-#     color_a = np.array(colors[0])
-#     color_b = np.array(colors[1])
-#     color = ((1 - data[::2, :, None]) * color_a + data[::2, :, None] * color_b).astype(int)
-#     bgcolor = ((1 - data[1::2, :, None]) * color_a + data[1::2, :, None] * color_b).astype(int)
-
-#     result_parts = []
-#     for y in range(shape[0] // 2):
-#         for x in range(shape[1]):
-#             result_parts.append(
-#                 f"[rgb({color[y, x, 0]},{color[y, x, 1]},{color[y, x, 2]}) on rgb({bgcolor[y, x, 0]},{bgcolor[y, x, 1]},{bgcolor[y, x, 2]})]▀[/]"
-#             )
-#         result_parts.append("\n")
-#     if shape[0] % 2 == 1:
-#         for x in range(shape[1]):
-#             result_parts.append(f"[rgb({color[-1, x, 0]},{color[-1, x, 1]},{color[-1, x, 2]})]▀[/]")
-
-#     c = Console(log_path=False, record=False)
-#     c.print("".join(result_parts))
-#     # return "".join(result_parts)
