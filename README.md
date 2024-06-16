@@ -10,7 +10,7 @@
 </div>
 
 > [!WARNING]
-> TensorHue is currently in pre-alpha. We appreciate any feedback!
+> TensorHue is currently in pre-alpha. Expect bugs. We appreciate any feedback!
 
 # TensorHue - tensors, visualized
 
