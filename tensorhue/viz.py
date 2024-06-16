@@ -1,8 +1,8 @@
 from rich.console import Console
-import numpy as np
+import tensorhue._numpy as np
 from tensorhue.colors import ColorScheme
 from tensorhue._print_opts import PRINT_OPTS
-from tensorhue.numpy import NumpyArrayWrapper
+from tensorhue._numpy import NumpyArrayWrapper
 
 
 def viz(tensor, *args, **kwargs):

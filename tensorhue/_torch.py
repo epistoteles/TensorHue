@@ -1,4 +1,4 @@
-import numpy as np
+import tensorhue._numpy as np
 
 
 def _tensorhue_to_numpy_torch(tensor) -> np.ndarray:

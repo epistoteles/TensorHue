@@ -1,10 +1,10 @@
 import sys
 from rich.console import Console
-import numpy as np
+import tensorhue._numpy as np
 from tensorhue.colors import COLORS, ColorScheme
 from tensorhue._print_opts import PRINT_OPTS, set_printoptions
-from tensorhue.numpy import NumpyArrayWrapper
-from tensorhue.torch import _tensorhue_to_numpy_torch
+from tensorhue._numpy import NumpyArrayWrapper
+from tensorhue._torch import _tensorhue_to_numpy_torch
 from tensorhue.eastereggs import pride
 from tensorhue.viz import viz, _viz
 

@@ -1,4 +1,4 @@
-import numpy as np
+import tensorhue._numpy as np
 
 
 class NumpyArrayWrapper(np.ndarray):
