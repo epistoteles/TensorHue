@@ -1,6 +1,7 @@
 [tool.black]
 line-length = 120
-target-version = ['py310']
+target-version = ["py39", "py310", "py311"]
+extend-exclude = "README.md"
 
 [build-system]
 requires = ["setuptools>=42.0", "wheel"]

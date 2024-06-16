@@ -16,7 +16,7 @@
 
 TensorHue is a Python library that allows you to visualize tensors right in your console, making understanding and debugging tensor contents easier.
 
-You can use it with your favorite tensor processing libraries, such as PyTorch, JAX*, and TensorFlow*.
+You can use it with your favorite tensor processing libraries, such as PyTorch, JAX*, and TensorFlow*.  
 _*coming soon_
 
 TensorHue automagically detects which kind of tensor you are visualizing and adjusts accordingly:
