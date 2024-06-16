@@ -1,10 +1,9 @@
-import torch
 import numpy as np
 
 
-def _tensorhue_to_numpy_torch(tensor: torch.Tensor) -> np.ndarray:
-    if isinstance(tensor, torch.masked.MaskedTensor):
-        return np.ma.masked_array(tensor.get_data(), torch.logical_not(tensor.get_mask()))
+def _tensorhue_to_numpy_torch(tensor) -> np.ndarray:
+    if tensor.__class__.__name__ == "MaskedTensor":  # hacky - we shouldn't import torch here
+        return np.ma.masked_array(tensor.get_data(), ~tensor.get_mask())
     try:
         return tensor.numpy()
     except RuntimeError as e:
