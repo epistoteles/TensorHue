@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/tensorhue.png" alt="TensorHue" width="1152">
 </div>
-
+<br>
 <div align="center">
   <img src="https://img.shields.io/badge/python-≥3.9-blue.svg">
   <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/coverage-badge.svg">
@@ -10,13 +10,16 @@
 </div>
 
 > [!WARNING]
-> TensorHue is currently in Pre-Alpha. We appreciate any feedback!
+> TensorHue is currently in pre-alpha. We appreciate any feedback!
 
 # TensorHue - tensors, visualized
 
 TensorHue is a Python library that allows you to visualize tensors right in your console, making understanding and debugging tensor contents easier.
 
-You can use it with your favorite tensor processing libraries, such as PyTorch, JAX*, and TensorFlow*.  _*coming soon_
+You can use it with your favorite tensor processing libraries, such as PyTorch, JAX*, and TensorFlow*.
+_*coming soon_
+
+TensorHue automagically detects which kind of tensor you are visualizing and adjusts accordingly:
 
 <div align="center">
   <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/tensor_types.png" alt="tensor types" width="1152">
