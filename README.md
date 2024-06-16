@@ -27,7 +27,7 @@ TensorHue automagically detects which kind of tensor you are visualizing and adj
 
 ## Getting started
 
-Using TensorHue is easy, simply import TensorHue after importing the library of your choice:
+Using TensorHue is easy, simply import TensorHue *after* importing the library of your choice:
 
 ```python
 import torch
@@ -47,7 +47,7 @@ You can also visualize them like this:
 tensorhue.viz(t) ✅
 ```
 
-Numpy arrays can only be visualized with `tensorhue.viz(...)` (because np.array is immutable):
+Numpy arrays can only be visualized with `tensorhue.viz(...)` (because np.ndarray is immutable):
 
 ```python
 np.array([1,2,3]).viz() ❌
