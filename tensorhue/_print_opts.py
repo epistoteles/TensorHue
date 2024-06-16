@@ -1,8 +1,8 @@
-import dataclasses
+from dataclasses import dataclass
 from tensorhue.colors import ColorScheme
 
 
-@dataclasses.dataclass
+@dataclass
 class __PrinterOptions:
     threshold: float = 1000
     edgeitems: int = 3
@@ -19,6 +19,7 @@ def set_printoptions(
     edgeitems: int = None,
     linewidth: int = None,
     colorscheme: ColorScheme = None,
+    accessible: bool = False,
 ):
     """Set options for printing. Items shamelessly taken from NumPy
 
@@ -31,13 +32,8 @@ def set_printoptions(
             inserting line breaks (default = 200). Thresholded matrices will
             ignore this parameter.
         colorscheme: The color scheme to use.
-
-    Example::
-
-        >>> TODO
-
+        accessible: Whether to use accessible mode or not (default = False).
     """
-
     if threshold is not None:
         assert isinstance(threshold, int)
         PRINT_OPTS.threshold = threshold
@@ -53,11 +49,7 @@ def set_printoptions(
     if colorscheme is not None:
         assert isinstance(colorscheme, ColorScheme)
         PRINT_OPTS.colorscheme = colorscheme
-
-
-def _get_printoptions() -> dict[str, any]:
-    """
-    Gets the current options for printing, as a dictionary that can be passed
-    as ``**kwargs`` to set_printoptions().
-    """
-    return dataclasses.asdict(PRINT_OPTS)
+    if accessible:
+        raise NotImplementedError(
+            "Accessible mode is not implemented yet. If you have a vision impairment and can provide feedback or beta-test color schemes please let us know."
+        )

@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from rich.color_triplet import ColorTriplet
 import numpy as np
 from matplotlib import colormaps
@@ -8,28 +7,41 @@ from matplotlib.colors import Colormap, Normalize
 
 
 COLORS = {
-    "masked": ColorTriplet(140, 140, 140),  # medium grey
+    "masked": ColorTriplet(127, 127, 127),  # medium grey
     "default_dark": ColorTriplet(64, 17, 159),  # dark purple
     "default_medium": ColorTriplet(255, 55, 140),  # pink
     "default_bright": ColorTriplet(255, 210, 240),  # light rose
     "true": ColorTriplet(125, 215, 82),  # green
     "false": ColorTriplet(255, 80, 80),  # red
-    "accessible_true": ColorTriplet(255, 80, 80),  # TODO
-    "accessible_false": ColorTriplet(125, 215, 82),  # TODO
+    "accessible_true": ColorTriplet(255, 255, 255),  # TODO
+    "accessible_false": ColorTriplet(0, 0, 0),  # TODO
     "black": ColorTriplet(0, 0, 0),  # black
     "white": ColorTriplet(255, 255, 255),  # white
 }
 
 
-@dataclass
 class ColorScheme:
-    _colormap: Colormap = field(default_factory=lambda: colormaps["magma"])
-    normalize: Normalize = field(default_factory=Normalize)
-    _masked_color: ColorTriplet = field(default_factory=lambda: COLORS["masked"])
-    true_color: ColorTriplet = field(default_factory=lambda: COLORS["true"])
-    false_color: ColorTriplet = field(default_factory=lambda: COLORS["false"])
-    _inf_color: ColorTriplet = field(default_factory=lambda: COLORS["white"])
-    _ninf_color: ColorTriplet = field(default_factory=lambda: COLORS["black"])
+    def __init__(
+        self,
+        colormap: Colormap = colormaps["magma"],
+        normalize: Normalize = Normalize(),
+        masked_color: ColorTriplet = COLORS["masked"],
+        true_color: ColorTriplet = COLORS["true"],
+        false_color: ColorTriplet = COLORS["false"],
+        inf_color: ColorTriplet = COLORS["white"],
+        ninf_color: ColorTriplet = COLORS["black"],
+    ):
+        self._colormap = colormap
+        self.normalize = normalize
+        self._masked_color = masked_color
+        self.true_color = true_color
+        self.false_color = false_color
+        self._inf_color = inf_color
+        self._ninf_color = ninf_color
+
+        self.colormap.set_extremes(
+            bad=self.masked_color.normalized, under=self.ninf_color.normalized, over=self.inf_color.normalized
+        )
 
     @property
     def colormap(self):
@@ -38,7 +50,9 @@ class ColorScheme:
     @colormap.setter
     def colormap(self, value):
         self._colormap = value
-        self._colormap.set_extreme(bad=self._masked_color, under=self._ninf_color, over=self._inf_color)
+        self._colormap.set_extremes(
+            bad=self._masked_color.normalized, under=self._ninf_color.normalized, over=self._inf_color.normalized
+        )
 
     @property
     def masked_color(self):
@@ -47,7 +61,7 @@ class ColorScheme:
     @masked_color.setter
     def masked_color(self, value):
         self._masked_color = value
-        self._colormap.set_bad(value)
+        self._colormap.set_bad(value.normalized)
 
     @property
     def inf_color(self):
@@ -56,7 +70,7 @@ class ColorScheme:
     @inf_color.setter
     def inf_color(self, value):
         self._inf_color = value
-        self._colormap.set_over(value)
+        self._colormap.set_over(value.normalized)
 
     @property
     def ninf_color(self):
@@ -65,15 +79,22 @@ class ColorScheme:
     @ninf_color.setter
     def ninf_color(self, value):
         self._ninf_color = value
-        self._colormap.set_under(value)
+        self._colormap.set_under(value.normalized)
 
     def __call__(self, data: np.ndarray) -> np.ndarray:
+        if data.dtype == "bool":
+            true_values = np.array(self.true_color, dtype=np.uint8)
+            false_values = np.array(self.false_color, dtype=np.uint8)
+            return np.where(data[..., np.newaxis], true_values, false_values)
+        data_noinf = np.where(np.isinf(data), np.nan, data)
+        self.normalize.vmin = np.nanmin(data_noinf)
+        self.normalize.vmax = np.nanmax(data_noinf)
         return self.colormap(self.normalize(data), bytes=True)
 
     def __repr__(self):
         return (
             f"ColorScheme(\n"
-            f"    colormap={self.colormap},\n"
+            f"    colormap={self._colormap},\n"
             f"    normalize={self.normalize},\n"
             f"    masked_color={self._masked_color},\n"
             f"    true_color={self.true_color},\n"
