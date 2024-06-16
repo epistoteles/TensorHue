@@ -1,10 +1,8 @@
-import pytest
 from rich.color_triplet import ColorTriplet
 import numpy as np
-
-from tensorhue.colors import ColorScheme, COLORS
 from matplotlib.colors import Colormap
 from matplotlib import colormaps
+from tensorhue.colors import ColorScheme, COLORS
 
 
 def test_COLORS():
