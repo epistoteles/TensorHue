@@ -68,8 +68,8 @@ from tensorhue import ColorScheme
 from matplotlib import colormaps
 
 cs = ColorScheme(colormap=colormaps['inferno'],
-                 true_color=(10,10,10),
-                 false_color=(20,20,20))
+                 true_color=(255,255,255),
+                 false_color=(0,0,0))
 t.viz(cs)
 ```
 
