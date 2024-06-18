@@ -7,6 +7,12 @@ on:
     paths:
       - 'tensorhub/**'
       - 'tests/**'
+  pull_request:
+    branches:
+      main
+    paths:
+      - 'tensorhub/**'
+      - 'tests/**'
 
 jobs:
   update_coverage:
