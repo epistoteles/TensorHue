@@ -1,4 +1,3 @@
-import pytest
 from tensorhue.eastereggs import pride
 
 
