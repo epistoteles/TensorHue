@@ -32,12 +32,24 @@ jobs:
           coverage html
           genbadge coverage --input-file coverage.xml
 
+      - name: "Check if coverage-badge.svg Changed"
+        id: check_svg_change
+        run: |
+          if git diff --quiet -- exit-code -- coverage-badge.svg; then
+            echo "No changes in coverage-badge.svg"
+            echo "::set-output name=svg_changed::false"
+          else
+            echo "Changes detected in coverage-badge.svg"
+            echo "::set-output name=svg_changed::true"
+          fi
+
       - name: "Commit and Push Changes"
+        if: steps.check_svg_change.outputs.svg_changed == 'true'
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add coverage-badge.svg
-          git commit -m "[gh-actions]: update code coverage reports and badge"
+          git commit -m "Update code coverage badge"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
