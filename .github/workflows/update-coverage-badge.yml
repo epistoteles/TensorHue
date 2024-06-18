@@ -1,4 +1,4 @@
-name: Update code coverage reports and badge
+name: Update code coverage badge
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   update_coverage:
-    name: "Update Coverage Reports and Badge"
+    name: "Update coverage badgeadge"
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout Repository"
@@ -36,8 +36,8 @@ jobs:
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add coverage.xml htmlcov/* reports/* coverage-badge.svg
-          git commit -m "Update code coverage reports and badge"
+          git add coverage-badge.svg
+          git commit -m "[gh-actions]: update code coverage reports and badge"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
