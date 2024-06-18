@@ -59,12 +59,14 @@ jobs:
           git config user.name "github-actions[bot]"
 
           if [[ "${{ github.event_name }}" == 'push' ]]; then
-            target_branch="main"
+            target_branch=$(echo "${{ github.ref }}" | awk -F'/' '{print $3}')
           else
             target_branch="${{ github.event.pull_request.head.ref }}"
           fi
 
-          git checkout "${target_branch}"
+          git fetch origin "${target_branch}:${target_branch}"
+          git checkout "${target_branch}" || git checkout -b "${target_branch}"
+
           git add coverage-badge.svg
           git commit -m "gh-actions[bot]: update code coverage badge"
           git push
