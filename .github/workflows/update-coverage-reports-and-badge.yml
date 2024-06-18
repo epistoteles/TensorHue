@@ -34,9 +34,9 @@ jobs:
 
       - name: "Commit and Push Changes"
         run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add coverage.xml coverage.html coverage_badge.svg
+          git add coverage.xml htmlcov/* reports/* coverage_badge.svg
           git commit -m "Update code coverage reports and badge"
           git push
         env:
