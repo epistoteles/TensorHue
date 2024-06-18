@@ -57,6 +57,14 @@ jobs:
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+
+          if [[ "${{ github.event_name }}" == 'push' ]]; then
+            target_branch="main"
+          else
+            target_branch="${{ github.event.pull_request.head.ref }}"
+          fi
+
+          git checkout "${target_branch}"
           git add coverage-badge.svg
           git commit -m "gh-actions[bot]: update code coverage badge"
           git push
