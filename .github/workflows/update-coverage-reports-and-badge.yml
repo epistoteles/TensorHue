@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add coverage.xml htmlcov/* reports/* coverage_badge.svg
+          git add coverage.xml htmlcov/* reports/* coverage-badge.svg
           git commit -m "Update code coverage reports and badge"
           git push
         env:
