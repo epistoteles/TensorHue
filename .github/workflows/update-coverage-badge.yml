@@ -37,14 +37,14 @@ jobs:
         run: |
           if git diff --quiet -- exit-code -- coverage-badge.svg; then
             echo "No changes in coverage-badge.svg"
-            echo "::set-output name=svg_changed::false"
+            echo "svg_changed=false" >> $GITHUB_ENV
           else
             echo "Changes detected in coverage-badge.svg"
-            echo "::set-output name=svg_changed::true"
+            echo "svg_changed=true" >> $GITHUB_ENV
           fi
 
       - name: "Commit and Push Changes"
-        if: steps.check_svg_change.outputs.svg_changed == 'true'
+        if: env.svg_changed == 'true'
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
