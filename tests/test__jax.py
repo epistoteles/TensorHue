@@ -1,7 +1,6 @@
 import pytest
 import jax.numpy as jnp
 from jax import core
-import jaxlib
 import numpy as np
 from tensorhue._jax import _tensorhue_to_numpy_jax
 
