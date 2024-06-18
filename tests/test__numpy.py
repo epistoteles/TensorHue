@@ -1,4 +1,3 @@
-import pytest
 import numpy as np
 from tensorhue._numpy import NumpyArrayWrapper
 
