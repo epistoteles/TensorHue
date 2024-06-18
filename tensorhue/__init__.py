@@ -1,5 +1,5 @@
 import sys
-from rich.console import Console
+import inspect
 import tensorhue._numpy as np
 from tensorhue.colors import COLORS, ColorScheme
 from tensorhue._print_opts import PRINT_OPTS, set_printoptions
@@ -25,5 +25,11 @@ if "jax" in sys.modules:
     setattr(jax.Array, "viz", _viz)
     setattr(jax.Array, "_tensorhue_to_numpy", _tensorhue_to_numpy_jax)
     jaxlib = sys.modules["jaxlib"]
-    setattr(jaxlib.xla_extension.DeviceArrayBase, "viz", _viz)
-    setattr(jaxlib.xla_extension.DeviceArrayBase, "_tensorhue_to_numpy", _tensorhue_to_numpy_jax)
+    if "DeviceArrayBase" in {x[0] for x in inspect.getmembers(jaxlib.xla_extension)}:  # jax < 0.4.X
+        setattr(jaxlib.xla_extension.DeviceArrayBase, "viz", _viz)
+        setattr(jaxlib.xla_extension.DeviceArrayBase, "_tensorhue_to_numpy", _tensorhue_to_numpy_jax)
+    if "ArrayImpl" in {
+        x[0] for x in inspect.getmembers(jaxlib.xla_extension)
+    }:  # jax >= 0.4.X (not sure about the exact version this changed)
+        setattr(jaxlib.xla_extension.ArrayImpl, "viz", _viz)
+        setattr(jaxlib.xla_extension.ArrayImpl, "_tensorhue_to_numpy", _tensorhue_to_numpy_jax)
