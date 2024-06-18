@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 120
 target-version = ["py39", "py310", "py311"]
-extend-exclude = (\.md|\.svg$)
+extend-exclude = "(\\.md|\\.svg$)"
 
 [build-system]
 requires = ["setuptools>=42.0", "wheel"]
