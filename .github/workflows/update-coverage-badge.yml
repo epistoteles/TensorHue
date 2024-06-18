@@ -27,13 +27,13 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: "Install Dependencies"
+      - name: "Install dependencies"
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
           pip install -e .
 
-      - name: "Run Coverage and Generate Badge"
+      - name: "Run coverage and generate badge"
         run: |
           pytest .
           coverage report
@@ -52,11 +52,22 @@ jobs:
             echo "svg_changed=true" >> $GITHUB_ENV
           fi
 
-      - name: "Commit and Push Changes"
+      - name: "Commit and push changes"
         if: env.svg_changed == 'true'
         run: |
           git config user.email "${{ github.run_id }}+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
+
+          if [[ "${{ github.event_name }}" == 'push' ]]; then
+            target_branch=$(echo "${{ github.ref }}" | awk -F'/' '{print $3}')
+          else
+            target_branch="${{ github.event.pull_request.head.ref }}"
+          fi
+
+          git fetch origin "${target_branch}:${target_branch}"
+          git checkout "${target_branch}" || git checkout -b "${target_branch}"
+          git push --set-upstream origin "${target_branch}"
+
           git add coverage-badge.svg
           git commit -m "gh-actions[bot]: update code coverage badge"
           git push

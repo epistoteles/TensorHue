@@ -2,6 +2,7 @@
 pre-commit
 pylint
 torch
+jax
 tox
 pytest
 pytest-cov
