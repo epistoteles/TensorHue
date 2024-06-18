@@ -10,7 +10,7 @@
 </div>
 
 > [!WARNING]
-> TensorHue is currently in pre-alpha. We appreciate any feedback!
+> TensorHue is currently in pre-alpha. Expect bugs. We appreciate any feedback!
 
 # TensorHue - tensors, visualized
 
@@ -26,6 +26,12 @@ TensorHue automagically detects which kind of tensor you are visualizing and adj
 </div>
 
 ## Getting started
+
+Install TensorHue with pip:
+
+```bash
+pip install tensorhue
+```
 
 Using TensorHue is easy, simply import TensorHue *after* importing the library of your choice:
 
@@ -62,8 +68,8 @@ from tensorhue import ColorScheme
 from matplotlib import colormaps
 
 cs = ColorScheme(colormap=colormaps['inferno'],
-                 true_color=(10,10,10),
-                 false_color=(20,20,20))
+                 true_color=(255,255,255),
+                 false_color=(0,0,0))
 t.viz(cs)
 ```
 
