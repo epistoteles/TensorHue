@@ -1,5 +1,5 @@
 from rich.console import Console
-import tensorhue._numpy as np
+import numpy as np
 from tensorhue.colors import ColorScheme
 from tensorhue._print_opts import PRINT_OPTS
 from tensorhue._numpy import NumpyArrayWrapper

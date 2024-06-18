@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from rich.color_triplet import ColorTriplet
-import tensorhue._numpy as np
 from matplotlib import colormaps
 from matplotlib.colors import Colormap, Normalize
+import numpy as np
 
 
 COLORS = {

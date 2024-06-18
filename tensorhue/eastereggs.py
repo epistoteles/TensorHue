@@ -1,4 +1,4 @@
-import tensorhue._numpy as np
+import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from rich.color_triplet import ColorTriplet
 from tensorhue.colors import ColorScheme
