@@ -26,7 +26,7 @@ jobs:
 
       - name: "Run Coverage and Generate Badge"
         run: |
-          coverage run -m pytest --cov=tensorhue
+          pytest .
           coverage report
           coverage xml
           coverage html
