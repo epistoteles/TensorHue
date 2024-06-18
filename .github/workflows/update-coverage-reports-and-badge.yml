@@ -21,11 +21,11 @@ jobs:
       - name: "Install Dependencies"
         run: |
           python -m pip install --upgrade pip
-          pip install coverage genbadge pytest
+          pip install coverage genbadge pytest pytest-cov
 
       - name: "Run Coverage and Generate Badge"
         run: |
-          coverage run -m pytest
+          coverage run -m pytest --cov=tensorhue
           coverage report
           coverage xml
           coverage html
