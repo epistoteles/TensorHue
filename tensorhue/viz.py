@@ -51,68 +51,6 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True):
     c.print("\n".join(result_lines))
 
 
-# def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme) -> list[str]:
-#     """
-#     Constructs a list of rich-compatible strings out of a 2D numpy array.
-
-#     Args:
-#         array_2d (np.ndarray): The 2-dimensional numpy array
-#         colorscheme (ColorScheme): The color scheme to use
-#     """
-#     result_lines = [""]
-#     terminal_width = get_terminal_width()
-#     shape = array_2d.shape
-
-#     if shape[1] <= terminal_width:
-#         colors = colorscheme(array_2d)[..., :3]
-
-#         for y in range(0, shape[0] - 1, 2):
-#             for x in range(shape[-1]):
-#                 result_lines[
-#                     -1
-#                 ] += f"[rgb({colors[y, x, 0]},{colors[y, x, 1]},{colors[y, x, 2]}) on rgb({colors[y+1, x, 0]},{colors[y+1, x, 1]},{colors[y+1, x, 2]})]▀[/]"
-#             result_lines.append("")
-
-#         if shape[0] % 2 == 1:
-#             for x in range(shape[1]):
-#                 result_lines[-1] += f"[rgb({colors[-1, x, 0]},{colors[-1, x, 1]},{colors[-1, x, 2]})]▀[/]"
-#         else:
-#             result_lines = result_lines[:-1]
-
-#     else:
-#         slice_left = (terminal_width - 5) // 2
-#         slice_right = slice_left + 5
-#         colors_left = colorscheme(array_2d[:, :slice_left])[..., :3]
-#         colors_right = colorscheme(array_2d[:, slice_right:])[..., :3]
-
-#         for y in range(0, shape[0] - 1, 2):
-#             for x in range(slice_left):
-#                 result_lines[
-#                     -1
-#                 ] += f"[rgb({colors_left[y, x, 0]},{colors_left[y, x, 1]},{colors_left[y, x, 2]}) on rgb({colors_left[y+1, x, 0]},{colors_left[y+1, x, 1]},{colors_left[y+1, x, 2]})]▀[/]"
-#             result_lines[-1] += " ··· "
-#             for x in range(terminal_width - slice_right):
-#                 result_lines[
-#                     -1
-#                 ] += f"[rgb({colors_right[y, x, 0]},{colors_right[y, x, 1]},{colors_right[y, x, 2]}) on rgb({colors_right[y+1, x, 0]},{colors_right[y+1, x, 1]},{colors_right[y+1, x, 2]})]▀[/]"
-#             result_lines.append("")
-
-#         if shape[0] % 2 == 1:
-#             for x in range(slice_left):
-#                 result_lines[
-#                     -1
-#                 ] += f"[rgb({colors_left[-1, x, 0]},{colors_left[-1, x, 1]},{colors_left[-1, x, 2]})]▀[/]"
-#             result_lines[-1] += " ··· "
-#             for x in range(terminal_width - slice_right):
-#                 result_lines[
-#                     -1
-#                 ] += f"[rgb({colors_right[-1, x, 0]},{colors_right[-1, x, 1]},{colors_right[-1, x, 2]})]▀[/]"
-#         else:
-#             result_lines = result_lines[:-1]
-
-#     return result_lines
-
-
 def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme) -> list[str]:
     """
     Constructs a list of rich-compatible strings out of a 2D numpy array.
@@ -127,8 +65,8 @@ def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme) -> list[str]:
 
     if shape[1] > terminal_width:
         slice_left = (terminal_width - 5) // 2
-        slice_right = slice_left + 5
-        colors_right = colorscheme(array_2d[:, slice_right:])[..., :3]
+        slice_right = slice_left + (terminal_width - 5) % 2
+        colors_right = colorscheme(array_2d[:, -slice_right:])[..., :3]
     else:
         slice_left = shape[1]
         slice_right = colors_right = False
@@ -142,7 +80,7 @@ def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme) -> list[str]:
             ] += f"[rgb({colors_left[y, x, 0]},{colors_left[y, x, 1]},{colors_left[y, x, 2]}) on rgb({colors_left[y+1, x, 0]},{colors_left[y+1, x, 1]},{colors_left[y+1, x, 2]})]▀[/]"
         if slice_right:
             result_lines[-1] += " ··· "
-            for x in range(terminal_width - slice_right):
+            for x in range(slice_right):
                 result_lines[
                     -1
                 ] += f"[rgb({colors_right[y, x, 0]},{colors_right[y, x, 1]},{colors_right[y, x, 2]}) on rgb({colors_right[y+1, x, 0]},{colors_right[y+1, x, 1]},{colors_right[y+1, x, 2]})]▀[/]"
@@ -153,7 +91,7 @@ def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme) -> list[str]:
             result_lines[-1] += f"[rgb({colors_left[-1, x, 0]},{colors_left[-1, x, 1]},{colors_left[-1, x, 2]})]▀[/]"
         if slice_right:
             result_lines[-1] += " ··· "
-            for x in range(terminal_width - slice_right):
+            for x in range(slice_right):
                 result_lines[
                     -1
                 ] += f"[rgb({colors_right[-1, x, 0]},{colors_right[-1, x, 1]},{colors_right[-1, x, 2]})]▀[/]"
