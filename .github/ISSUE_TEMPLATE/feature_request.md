@@ -8,7 +8,7 @@ assignees: epistoteles
 ---
 
 **Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+A clear and concise description of what the problem is. Ex. I want to use x but it is does not work with y because z happens.
 
 **Describe the solution you'd like**
 A clear and concise description of what you want to happen.
