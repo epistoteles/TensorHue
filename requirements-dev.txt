@@ -2,6 +2,7 @@
 pre-commit
 pylint
 torch
+tensorflow
 jax
 tox
 pytest
