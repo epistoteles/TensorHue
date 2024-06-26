@@ -10,7 +10,7 @@ from tensorhue.eastereggs import pride
 from tensorhue.viz import viz, _viz
 
 
-__version__ = "0.0.11"  # single source of version truth
+__version__ = "0.0.12"  # single source of version truth
 
 __all__ = ["set_printoptions", "viz", "pride"]
 
