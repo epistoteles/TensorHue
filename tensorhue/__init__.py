@@ -3,9 +3,9 @@ import inspect
 from tensorhue.colors import COLORS, ColorScheme
 from tensorhue._print_opts import PRINT_OPTS, set_printoptions
 from tensorhue.connectors._numpy import NumpyArrayWrapper
-from tensorhue.connectors.torch import _tensorhue_to_numpy_torch
-from tensorhue.connectors.jax import _tensorhue_to_numpy_jax
-from tensorhue.connectors.tensorflow import _tensorhue_to_numpy_tensorflow
+from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
+from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
+from tensorhue.connectors._tensorflow import _tensorhue_to_numpy_tensorflow
 from tensorhue.eastereggs import pride
 from tensorhue.viz import viz, _viz
 

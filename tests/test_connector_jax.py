@@ -2,7 +2,7 @@ import pytest
 import jax.numpy as jnp
 from jax import core
 import numpy as np
-from tensorhue.connectors.jax import _tensorhue_to_numpy_jax
+from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
 
 
 class NonConvertibleTensor:

@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 import pytest
-from tensorhue.connectors.tensorflow import _tensorhue_to_numpy_tensorflow
+from tensorhue.connectors._tensorflow import _tensorhue_to_numpy_tensorflow
 
 
 class NonConvertibleTensor:
