@@ -4,7 +4,7 @@ from rich.console import Console
 import numpy as np
 from tensorhue.colors import ColorScheme
 from tensorhue._print_opts import PRINT_OPTS
-from tensorhue._numpy import NumpyArrayWrapper
+from tensorhue.connectors.numpy import NumpyArrayWrapper
 
 
 def viz(tensor, *args, **kwargs):

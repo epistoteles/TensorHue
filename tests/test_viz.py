@@ -2,7 +2,7 @@ import pytest
 import torch
 import numpy as np
 from tensorhue.viz import viz
-from tensorhue._torch import _tensorhue_to_numpy_torch
+from tensorhue.connectors.torch import _tensorhue_to_numpy_torch
 
 
 @pytest.mark.parametrize("tensor", [np.ones(10), _tensorhue_to_numpy_torch(torch.ones(10))])
