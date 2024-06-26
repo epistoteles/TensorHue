@@ -1,5 +1,5 @@
 import numpy as np
-from tensorhue.connectors.numpy import NumpyArrayWrapper
+from tensorhue.connectors._numpy import NumpyArrayWrapper
 
 
 def test_instantiation():

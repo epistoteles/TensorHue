@@ -2,7 +2,7 @@ import sys
 import inspect
 from tensorhue.colors import COLORS, ColorScheme
 from tensorhue._print_opts import PRINT_OPTS, set_printoptions
-from tensorhue.connectors.numpy import NumpyArrayWrapper
+from tensorhue.connectors._numpy import NumpyArrayWrapper
 from tensorhue.connectors.torch import _tensorhue_to_numpy_torch
 from tensorhue.connectors.jax import _tensorhue_to_numpy_jax
 from tensorhue.connectors.tensorflow import _tensorhue_to_numpy_tensorflow
