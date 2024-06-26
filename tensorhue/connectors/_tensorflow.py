@@ -8,7 +8,7 @@ def _tensorhue_to_numpy_tensorflow(tensor) -> np.ndarray:
             "Tensorflow RaggedTensors are currently converted to dense tensors by filling with the value 0. Values that are actually 0 and filled-in values will appear indistinguishable. This behavior will change in the future."
         )
         return _tensorhue_to_numpy_tensorflow(tensor.to_tensor())
-    elif tensor.__class__.__name__ == "SparseTensor":
+    if tensor.__class__.__name__ == "SparseTensor":
         raise ValueError("Tensorflow SparseTensors are not yet supported by TensorHue.")
     try:
         return tensor.numpy()
