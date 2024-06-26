@@ -10,7 +10,7 @@ def _tensorhue_to_numpy_tensorflow(tensor) -> np.ndarray:
         return _tensorhue_to_numpy_tensorflow(tensor.to_tensor())
     if tensor.__class__.__name__ == "SparseTensor":
         raise ValueError("Tensorflow SparseTensors are not yet supported by TensorHue.")
-    try:
+    try:  # pylint: disable=duplicate-code
         return tensor.numpy()
     except RuntimeError as e:
         raise NotImplementedError(
