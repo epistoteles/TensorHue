@@ -1,11 +1,11 @@
 import sys
 import inspect
-import tensorhue._numpy as np
 from tensorhue.colors import COLORS, ColorScheme
 from tensorhue._print_opts import PRINT_OPTS, set_printoptions
-from tensorhue._numpy import NumpyArrayWrapper
-from tensorhue._torch import _tensorhue_to_numpy_torch
-from tensorhue._jax import _tensorhue_to_numpy_jax
+from tensorhue.connectors._numpy import NumpyArrayWrapper
+from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
+from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
+from tensorhue.connectors._tensorflow import _tensorhue_to_numpy_tensorflow
 from tensorhue.eastereggs import pride
 from tensorhue.viz import viz, _viz
 
@@ -33,3 +33,10 @@ if "jax" in sys.modules:
     }:  # jax >= 0.4.X (not sure about the exact version this changed)
         setattr(jaxlib.xla_extension.ArrayImpl, "viz", _viz)
         setattr(jaxlib.xla_extension.ArrayImpl, "_tensorhue_to_numpy", _tensorhue_to_numpy_jax)
+if "tensorflow" in sys.modules:
+    tensorflow = sys.modules["tensorflow"]
+    setattr(tensorflow.Tensor, "viz", _viz)
+    setattr(tensorflow.Tensor, "_tensorhue_to_numpy", _tensorhue_to_numpy_tensorflow)
+    composite_tensor = sys.modules["tensorflow.python.framework.composite_tensor"]
+    setattr(composite_tensor.CompositeTensor, "viz", _viz)
+    setattr(composite_tensor.CompositeTensor, "_tensorhue_to_numpy", _tensorhue_to_numpy_tensorflow)
