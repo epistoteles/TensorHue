@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import pytest
-from tensorhue.connectors.torch import _tensorhue_to_numpy_torch
+from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
 
 
 class NonConvertibleTensor(torch.Tensor):
