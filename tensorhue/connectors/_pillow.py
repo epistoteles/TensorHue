@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def _tensorhue_to_numpy_pillow(image, thumbnail, max_size, *args, **kwargs) -> np.ndarray:
+def _tensorhue_to_numpy_pillow(image, thumbnail, max_size) -> np.ndarray:
     try:
         image = image.convert("RGB")
     except Exception as e:

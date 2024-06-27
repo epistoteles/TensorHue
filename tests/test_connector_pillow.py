@@ -1,5 +1,5 @@
-from PIL import Image
 import os
+from PIL import Image
 import pytest
 from tensorhue.connectors._pillow import _tensorhue_to_numpy_pillow
 

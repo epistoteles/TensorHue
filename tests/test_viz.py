@@ -1,10 +1,10 @@
+import os
 import pytest
 import torch
 import jax.numpy as jnp
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import os
 from tensorhue.viz import viz
 from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
 from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
