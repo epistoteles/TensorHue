@@ -16,7 +16,7 @@
 
 TensorHue is a Python library that allows you to visualize tensors right in your console, making understanding and debugging tensor contents easier.
 
-You can use it with your favorite tensor processing libraries, such as PyTorch, JAX, and TensorFlow.  
+You can use it with your favorite tensor processing libraries, such as PyTorch, JAX, and TensorFlow, and a large set of related libraries, including Numpy, Pillow, torchvision, and more.  
 
 TensorHue automagically detects which kind of tensor you are visualizing and adjusts accordingly:
 
@@ -58,6 +58,22 @@ Numpy arrays can only be visualized with `tensorhue.viz(...)` (because np.ndarra
 np.array([1,2,3]).viz() ❌
 tensorhue.viz(np.array([1,2,3])) ✅
 ```
+
+Pillow images get visualized in RGB using `.viz()`:
+
+```python
+from torchvision.datasets import CIFAR10
+dataset = CIFAR10('.', dowload=True)
+img = dataset[0][0]
+img.viz() ✅
+```
+
+By default, images get downscaled to the size of your terminal, but you can make them even smaller if you want:
+
+```python
+img.viz(max_size=(40,40)) ✅
+```
+
 ## Custom colors
 
 You can pass along your own ColorScheme when visualizing a specific tensor:

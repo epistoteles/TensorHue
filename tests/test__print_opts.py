@@ -3,13 +3,14 @@ from tensorhue.colors import ColorScheme
 
 
 def test_default_print_opts():
-    assert PRINT_OPTS.threshold > 100
+    assert PRINT_OPTS.edgeitems == 3
     assert isinstance(PRINT_OPTS.colorscheme, ColorScheme)
 
 
 def test_set_printopts():
-    set_printoptions(threshold=1234)
-    assert PRINT_OPTS.threshold == 1234
-    set_printoptions(edgeitems=4)
-    assert PRINT_OPTS.edgeitems == 4
-    assert PRINT_OPTS.threshold == 1234
+    set_printoptions(edgeitems=42)
+    assert PRINT_OPTS.edgeitems == 42
+    cs = ColorScheme(true_color=(0, 0, 0))
+    set_printoptions(colorscheme=cs)
+    assert PRINT_OPTS.colorscheme == cs
+    assert PRINT_OPTS.edgeitems == 42

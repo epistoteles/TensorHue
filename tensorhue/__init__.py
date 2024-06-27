@@ -6,8 +6,9 @@ from tensorhue.connectors._numpy import NumpyArrayWrapper
 from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
 from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
 from tensorhue.connectors._tensorflow import _tensorhue_to_numpy_tensorflow
+from tensorhue.connectors._pillow import _tensorhue_to_numpy_pillow
 from tensorhue.eastereggs import pride
-from tensorhue.viz import viz, _viz
+from tensorhue.viz import viz, _viz, _viz_image
 
 
 __version__ = "0.0.12"  # single source of version truth
@@ -40,3 +41,7 @@ if "tensorflow" in sys.modules:
     composite_tensor = sys.modules["tensorflow.python.framework.composite_tensor"]
     setattr(composite_tensor.CompositeTensor, "viz", _viz)
     setattr(composite_tensor.CompositeTensor, "_tensorhue_to_numpy", _tensorhue_to_numpy_tensorflow)
+if "PIL" in sys.modules:
+    PIL = sys.modules["PIL"]
+    setattr(PIL.Image.Image, "viz", _viz_image)
+    setattr(PIL.Image.Image, "_tensorhue_to_numpy", _tensorhue_to_numpy_pillow)
