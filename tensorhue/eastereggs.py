@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 from rich.color_triplet import ColorTriplet
 from tensorhue.colors import ColorScheme
-from tensorhue.viz import viz, get_terminal_width
+from tensorhue.viz import viz, get_terminal_size
 
 
 def pride(width: int = None):
@@ -14,7 +14,7 @@ def pride(width: int = None):
             the full width of the terminal is used.
     """
     if width is None:
-        width = get_terminal_width(default_width=10)
+        width = get_terminal_size(default_width=10).columns
     pride_colors = [
         ColorTriplet(228, 3, 3),
         ColorTriplet(255, 140, 0),
