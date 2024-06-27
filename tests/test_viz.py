@@ -100,6 +100,15 @@ def test_no_legend(tensor, capsys):
     assert out.count("▀") == 10
 
 
+@pytest.mark.parametrize("scale", [1, 2, 4, 8])
+def test_scale(scale, capsys):
+    tensor = np.ones((4, 4))
+    viz(tensor, scale=scale)
+    captured = capsys.readouterr()
+    out = captured.out.rstrip("\n")
+    assert out.count("▀") == (8 * (scale**2))
+
+
 @pytest.mark.parametrize("image_filename", os.listdir("./tests/test_resources/"))
 @pytest.mark.parametrize("thumbnail", [True, False])
 def test_viz_image(image_filename, thumbnail, capsys):

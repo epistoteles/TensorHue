@@ -21,7 +21,7 @@ def viz(tensor, *args, **kwargs):
             ) from e
 
 
-def _viz(self, colorscheme: ColorScheme = None, legend: bool = True):
+def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int = 1):
     """
     Prints a tensor using colored Unicode art representation.
 
@@ -29,19 +29,26 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True):
         colorscheme (ColorScheme, optional): The color scheme to use.
             Defaults to None, which means the global default color scheme is used.
         legend (bool, optional): Whether or not to include legend information (like the shape)
+        scale (int, optional): Scales the size of the entire tensor up, making the unicode 'pixels' larger.
     """
+    if not isinstance(scale, int):
+        raise ValueError("scale must be an integer.")
+
     if colorscheme is None:
         colorscheme = PRINT_OPTS.colorscheme
 
     self = self._tensorhue_to_numpy()
     shape = self.shape
+    ndim = self.ndim
 
-    if len(shape) == 1:
+    if ndim == 1:
         self = self[np.newaxis, :]
-    elif len(shape) > 2:
+    elif ndim > 2:
         raise NotImplementedError(
             "Visualization for tensors with more than 2 dimensions is under development. Please slice them for now."
         )
+
+    self = np.repeat(np.repeat(self, scale, axis=1), scale, axis=0)
 
     result_lines = _viz_2d(self, colorscheme)
 
