@@ -4,6 +4,7 @@ pylint
 torch
 tensorflow
 jax
+pillow
 tox
 pytest
 pytest-cov
