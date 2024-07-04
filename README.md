@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/badge/python-≥3.9-blue.svg">
   <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/coverage-badge.svg">
   <img src="https://img.shields.io/pypi/dm/tensorhue">
+  <a href="https://x.com/TensorHue" target="_blank"><img src="https://img.shields.io/twitter/follow/TensorHue"></a>
   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg">
 </div>
 
