@@ -11,7 +11,7 @@ from tensorhue.eastereggs import pride
 from tensorhue.viz import viz, _viz, _viz_image
 
 
-__version__ = "0.0.13"  # single source of version truth
+__version__ = "0.0.14"  # single source of version truth
 
 __all__ = ["set_printoptions", "viz", "pride"]
 
