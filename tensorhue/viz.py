@@ -30,6 +30,7 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int 
             Defaults to None, which means the global default color scheme is used.
         legend (bool, optional): Whether or not to include legend information (like the shape)
         scale (int, optional): Scales the size of the entire tensor up, making the unicode 'pixels' larger.
+        **kwargs: Additional keyword arguments that are passed to the underlying viz function (vmin or vmax)
     """
     if not isinstance(scale, int):
         raise ValueError("scale must be an integer.")
@@ -66,6 +67,7 @@ def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None, **kwargs) -> 
     Args:
         array_2d (np.ndarray): The 2-dimensional numpy array (or 3-dimensional if the values are already RGB).
         colorscheme (ColorScheme): The color scheme to use. If None, the array must be 3-dimensional (already RGB values).
+        **kwargs: Additional keyword arguments that are passed to the underlying viz function (vmin or vmax)
     """
     terminal_width = get_terminal_size().columns
     shape = array_2d.shape
