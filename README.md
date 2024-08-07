@@ -72,7 +72,7 @@ img.viz() ✅
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/feature-vmin-vmax/.github/images.png" alt="image visualization" width="1000">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/images.png" alt="image visualization" width="1000">
 </div>
 
 By default, images get downscaled to the size of your terminal, but you can make them even smaller if you want:
@@ -120,5 +120,7 @@ conf_matrix.viz(vmin=0, vmax=1, scale=3)
 ```
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/feature-vmin-vmax/.github/confusion_matrix.png" alt="confusion matrix" width="1000">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/confusion_matrix.png" alt="confusion matrix" width="1000">
 </div>
+
+The `scale` parameter scales up the 'pixels' of the tensor so that small tensors are easier to view.
