@@ -8,20 +8,20 @@ from tensorhue._print_opts import PRINT_OPTS
 from tensorhue.connectors._numpy import NumpyArrayWrapper
 
 
-def viz(tensor, *args, **kwargs):
+def viz(tensor, **kwargs):
     if isinstance(tensor, np.ndarray):
         tensor = NumpyArrayWrapper(tensor)
-        tensor.viz(*args, **kwargs)  # pylint: disable=no-member
+        tensor.viz(**kwargs)  # pylint: disable=no-member
     else:
         try:
-            tensor.viz(*args, **kwargs)
+            tensor.viz(**kwargs)
         except Exception as e:
             raise NotImplementedError(
-                f"TensorHue does not support type {type(tensor)}. Raise an issue if you need to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
+                f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
             ) from e
 
 
-def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int = 1):
+def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int = 1, **kwargs):
     """
     Prints a tensor using colored Unicode art representation.
 
@@ -45,12 +45,12 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int 
         self = self[np.newaxis, :]
     elif ndim > 2:
         raise NotImplementedError(
-            "Visualization for tensors with more than 2 dimensions is under development. Please slice them for now."
+            "Visualization of tensors with more than 2 dimensions is under development. Please slice them for now."
         )
 
     self = np.repeat(np.repeat(self, scale, axis=1), scale, axis=0)
 
-    result_lines = _viz_2d(self, colorscheme)
+    result_lines = _viz_2d(self, colorscheme, **kwargs)
 
     if legend:
         result_lines.append(f"[italic]shape = {shape}[/]")
@@ -59,7 +59,7 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int 
     c.print("\n".join(result_lines))
 
 
-def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None) -> list[str]:
+def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None, **kwargs) -> list[str]:
     """
     Constructs a list of rich-compatible strings out of a 2D numpy array.
 
@@ -85,7 +85,7 @@ def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None) -> list[str]:
         slice_right = colors_right = False
 
     if colorscheme is not None:
-        colors_left = colorscheme(array_2d[:, :slice_left])[..., :3]
+        colors_left = colorscheme(array_2d[:, :slice_left], **kwargs)[..., :3]
     else:
         assert (
             array_2d.ndim == 3 and array_2d.shape[-1] == 3
