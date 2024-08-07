@@ -69,6 +69,10 @@ img = dataset[0][0]
 img.viz() ✅
 ```
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/images.png" alt="image visualization" width="1152">
+</div>
+
 By default, images get downscaled to the size of your terminal, but you can make them even smaller if you want:
 
 ```python
