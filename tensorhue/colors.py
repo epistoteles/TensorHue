@@ -1,8 +1,9 @@
 from __future__ import annotations
+import warnings
 
 from rich.color_triplet import ColorTriplet
 from matplotlib import colormaps
-from matplotlib.colors import Colormap, Normalize
+from matplotlib.colors import Colormap, Normalize, CenteredNorm
 import numpy as np
 
 
@@ -81,14 +82,33 @@ class ColorScheme:
         self._ninf_color = value
         self._colormap.set_under(value.normalized)
 
-    def __call__(self, data: np.ndarray) -> np.ndarray:
+    def __call__(self, data: np.ndarray, **kwargs) -> np.ndarray:
         if data.dtype == "bool":
             true_values = np.array(self.true_color, dtype=np.uint8)
             false_values = np.array(self.false_color, dtype=np.uint8)
             return np.where(data[..., np.newaxis], true_values, false_values)
         data_noinf = np.where(np.isinf(data), np.nan, data)
-        self.normalize.vmin = np.nanmin(data_noinf)
-        self.normalize.vmax = np.nanmax(data_noinf)
+        if "vmin" not in kwargs:
+            vmin = np.nanmin(data_noinf)
+        else:
+            vmin = float(kwargs["vmin"])
+        if "vmax" not in kwargs:
+            vmax = np.nanmax(data_noinf)
+        else:
+            vmax = float(kwargs["vmax"])
+        if isinstance(self.normalize, CenteredNorm):
+            vcenter = self.normalize.vcenter
+            diff_vmin = vmin - vcenter
+            diff_vmax = vmax - vcenter
+            max_abs_diff = max(abs(diff_vmin), abs(diff_vmax))
+            vmin = vcenter - max_abs_diff
+            vmax = vcenter + max_abs_diff
+            if "vmin" in kwargs and "vmax" in kwargs:
+                warnings.warn(
+                    f"You shouldn't specify both 'vmin' and 'vmax' when using CenteredNorm. 'vmin' and 'vmax' must be symmetric around 'vcenter' and are thus inferred from a single value. Using: {vmin=}, {vcenter=}, {vmax=}."
+                )
+        self.normalize.vmin = vmin
+        self.normalize.vmax = vmax
         return self.colormap(self.normalize(data), bytes=True)
 
     def __repr__(self):

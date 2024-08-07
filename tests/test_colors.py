@@ -1,6 +1,6 @@
 from rich.color_triplet import ColorTriplet
 import numpy as np
-from matplotlib.colors import Colormap
+from matplotlib.colors import Colormap, CenteredNorm
 from matplotlib import colormaps
 from tensorhue.colors import ColorScheme, COLORS
 
@@ -39,3 +39,52 @@ def test_ColorScheme():
 
     bool_array = np.array([True, False])
     assert np.array_equal(cs(bool_array), np.array([cs.true_color, cs.false_color]))
+
+
+def test_vmin_vmax():
+    cs = ColorScheme(colormap=colormaps["magma"])
+
+    values1 = np.array([-0.5, 0.0, 0.5, 0.75])
+
+    result1 = cs(values1)
+    assert np.array_equal(
+        result1,
+        np.array([[0, 0, 3, 255], [140, 41, 128, 255], [253, 159, 108, 255], [251, 252, 191, 255]], dtype=np.uint8),
+    )
+
+    result2 = cs(values1, vmin=-0.5)
+    assert np.array_equal(result1, result2)
+
+    result3 = cs(values1, vmax=0.75)
+    assert np.array_equal(result1, result3)
+
+    result4 = cs(values1, vmin=-0.5, vmax=0.75)
+    assert np.array_equal(result1, result4)
+
+    result5 = cs(values1, vmin=-1)
+    assert np.array_equal(
+        result5,
+        np.array([[94, 23, 127, 255], [211, 66, 109, 255], [254, 187, 128, 255], [251, 252, 191, 255]], dtype=np.uint8),
+    )
+
+    result6 = cs(values1, vmax=0.4)
+    assert np.array_equal(
+        result6,
+        np.array([[0, 0, 3, 255], [205, 63, 112, 255], [255, 255, 255, 255], [255, 255, 255, 255]], dtype=np.uint8),
+    )
+
+    cs = ColorScheme(colormap=colormaps["bwr"], normalize=CenteredNorm())
+
+    result7 = cs(values1)
+    assert np.array_equal(
+        result7,
+        np.array([[84, 84, 255, 255], [255, 254, 254, 255], [255, 84, 84, 255], [255, 0, 0, 255]], dtype=np.uint8),
+    )
+
+    result8 = cs(values1, vmin=-1)
+    assert np.array_equal(
+        result8,
+        np.array(
+            [[128, 128, 255, 255], [255, 254, 254, 255], [255, 126, 126, 255], [255, 62, 62, 255]], dtype=np.uint8
+        ),
+    )

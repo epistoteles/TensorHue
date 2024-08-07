@@ -60,7 +60,9 @@ np.array([1,2,3]).viz() ❌
 tensorhue.viz(np.array([1,2,3])) ✅
 ```
 
-Pillow images get visualized in RGB using `.viz()`:
+## Images
+
+Pillow images can be visualized in RGB using `.viz()`:
 
 ```python
 from torchvision.datasets import CIFAR10
@@ -68,6 +70,10 @@ dataset = CIFAR10('.', dowload=True)
 img = dataset[0][0]
 img.viz() ✅
 ```
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/images.png" alt="image visualization" width="1000">
+</div>
 
 By default, images get downscaled to the size of your terminal, but you can make them even smaller if you want:
 
@@ -96,7 +102,7 @@ Alternatively, you can overwrite the default ColorScheme:
 tensorhue.set_printoptions(colorscheme=cs)
 ```
 
-## Advanced colors
+## Advanced colormaps and normalization
 
 By default, TensorHue normalizes numerical values between 0 and 1 and then applies the matplotlib colormap. If you want to use diverging colormaps such as `coolwarm` or `bwr` and the value 0 to be mapped to the middle of the colormap, you need to specify the normailzer, e.g. `matplotlib.colors.CenteredNorm`:
 
@@ -106,3 +112,15 @@ cs = ColorScheme(colormap=colormaps['bwr'],
                  normalize=CenteredNorm(vcenter=0))
 t.viz(cs)
 ```
+
+You can also specify the normalization range manually, for example when you want to visualize a confusion matrix where colors should be mapped to the range [0, 1], but the actual values of the tensor in the range [0.01, 0.73]:
+
+```
+conf_matrix.viz(vmin=0, vmax=1, scale=3)
+```
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/epistoteles/tensorhue/main/.github/confusion_matrix.png" alt="confusion matrix" width="1000">
+</div>
+
+The `scale` parameter scales up the 'pixels' of the tensor so that small tensors are easier to view.
