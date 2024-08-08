@@ -113,7 +113,7 @@ cs = ColorScheme(colormap=colormaps['bwr'],
 t.viz(cs)
 ```
 
-You can also specify the normalization range manually, for example when you want to visualize a confusion matrix where colors should be mapped to the range [0, 1], but the actual values of the tensor in the range [0.01, 0.73]:
+You can also specify the normalization range manually, for example when you want to visualize a confusion matrix where colors should be mapped to the range [0, 1], but the actual values of the tensor are in the range [0.12, 0.73]:
 
 ```
 conf_matrix.viz(vmin=0, vmax=1, scale=3)
