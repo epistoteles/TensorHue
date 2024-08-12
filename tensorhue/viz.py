@@ -1,6 +1,7 @@
 import os
 import sys
 import warnings
+from typing import Tuple, List
 from rich.console import Console
 import numpy as np
 from tensorhue.colors import ColorScheme
@@ -60,7 +61,7 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int 
     c.print("\n".join(result_lines))
 
 
-def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None, **kwargs) -> list[str]:
+def _viz_2d(array_2d: np.ndarray, colorscheme: ColorScheme = None, **kwargs) -> List[str]:
     """
     Constructs a list of rich-compatible strings out of a 2D numpy array.
 
@@ -130,14 +131,14 @@ def _construct_unicode_string(colors_left: np.ndarray, colors_right: np.ndarray)
     return result_lines
 
 
-def _viz_image(self, legend: bool = False, thumbnail: bool = True, max_size: tuple[int, int] = None):
+def _viz_image(self, legend: bool = False, thumbnail: bool = True, max_size: Tuple[int, int] = None):
     """
     A special case of _viz that does not use the ColorScheme but instead treats the tensor as RGB or greyscale values directly.
 
     Args:
         legend (bool, optional): Whether or not to include legend information (like the shape)
         thumbnail (bool, optional): Scales down the image size to a thumbnail that fits into the terminal window
-        max_size (tuple[int, int], optional): The maximum size (width, height) to which the image gets downsized to. Only used if thumbnail=True.
+        max_size (Tuple[int, int], optional): The maximum size (width, height) to which the image gets downsized to. Only used if thumbnail=True.
     """
 
     raise_max_size_warning = max_size and not thumbnail
