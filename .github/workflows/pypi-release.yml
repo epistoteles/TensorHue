@@ -37,6 +37,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install build
 
+      - name: Check version consistency
+        run: |
+          import os
+          import sys
+          from tensorhue import __version__
+
+          github_ref = os.environ.get('GITHUB_REF')
+          if github_ref.startswith('refs/tags/'):
+              release_version = github_ref.split('/')[-1]
+              if release_version.startswith('v'):
+                  release_version = release_version[1:]  # Remove 'v' prefix
+              if release_version != __version__:
+                  print(f"Version mismatch: GitHub release {release_version} != Package version {__version__}")
+                  sys.exit(1)
+              print(f"Version {__version__} matches GitHub release tag (without 'v' prefix).")
+          else:
+              print("Not a release tag, skipping version check.")
+        shell: python
+
       - name: Build package
         run: python -m build
 
