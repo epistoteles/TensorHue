@@ -105,7 +105,7 @@ class ColorScheme:
             vmax = vcenter + max_abs_diff
             if "vmin" in kwargs and "vmax" in kwargs:
                 warnings.warn(
-                    f"You shouldn't specify both 'vmin' and 'vmax' when using CenteredNorm. 'vmin' and 'vmax' must be symmetric around 'vcenter' and are thus inferred from a single value. Using: {vmin=}, {vcenter=}, {vmax=}."
+                    f"You shouldn't specify both 'vmin' and 'vmax' when using CenteredNorm. 'vmin' and 'vmax' must be symmetric around 'vcenter' and are thus inferred from a single value. Using: vmin={vmin}, vcenter={vcenter}, vmax={vmax}."
                 )
         self.normalize.vmin = vmin
         self.normalize.vmax = vmax
