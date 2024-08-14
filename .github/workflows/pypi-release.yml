@@ -39,19 +39,31 @@ jobs:
 
       - name: Check version consistency
         run: |
-          import os
+          import re
           import sys
-          from tensorhue import __version__
+          import os
 
+          # Read the version from tensorhue/__init__.py
+          with open('tensorhue/__init__.py') as f:
+              content = f.read()
+              match = re.search(r'__version__\s*=\s*["\']([^"\']+)["\']', content)
+              if match:
+                  version = match.group(1)
+              else:
+                  print("Could not find __version__ in tensorhue/__init__.py")
+                  sys.exit(1)
+
+          # Extract the version from the GitHub release tag
           github_ref = os.environ.get('GITHUB_REF')
           if github_ref.startswith('refs/tags/'):
               release_version = github_ref.split('/')[-1]
               if release_version.startswith('v'):
                   release_version = release_version[1:]  # Remove 'v' prefix
-              if release_version != __version__:
-                  print(f"Version mismatch: GitHub release {release_version} != Package version {__version__}")
+
+              if release_version != version:
+                  print(f"Version mismatch: GitHub release {release_version} != Package version {version}")
                   sys.exit(1)
-              print(f"Version {__version__} matches GitHub release tag (without 'v' prefix).")
+              print(f"Version {version} matches GitHub release tag (without 'v' prefix).")
           else:
               print("Not a release tag, skipping version check.")
         shell: python
