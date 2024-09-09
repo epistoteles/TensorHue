@@ -36,11 +36,17 @@ Install TensorHue with pip:
 pip install tensorhue
 ```
 
-Using TensorHue is easy, simply import TensorHue *after* importing the library of your choice:
+Using TensorHue is easy, simply import TensorHue together with the library of your choice:
 
 ```python
 import torch
 import tensorhue
+```
+
+Or, alternatively:
+
+```python
+from tensorhue import viz
 ```
 
 That's it! You can now visualize any tensor by calling .viz() on it in your Python console:
@@ -52,7 +58,7 @@ tensorhue.viz(t) ✅
 
 ## Images
 
-Pillow images can be visualized in RGB using `.viz()`:
+Pillow images can be visualized in RGB and other color modes:
 
 ```python
 from torchvision.datasets import CIFAR10
@@ -82,7 +88,7 @@ from matplotlib import colormaps
 cs = ColorScheme(colormap=colormaps['inferno'],
                  true_color=(255,255,255),
                  false_color=(0,0,0))
-tensorhue.viz(t, cs) ✅
+tensorhue.viz(t, colorscheme=cs) ✅
 ```
 
 Alternatively, you can overwrite the default ColorScheme:
@@ -100,7 +106,7 @@ By default, TensorHue normalizes numerical values between 0 and 1 and then appli
 from matplotlib.colors import CenteredNorm
 cs = ColorScheme(colormap=colormaps['bwr'],
                  normalize=CenteredNorm(vcenter=0))
-tensorhue.viz(t, cs) ✅
+tensorhue.viz(t, colorscheme=cs) ✅
 ```
 
 You can also specify the normalization range manually, for example when you want to visualize a confusion matrix where colors should be mapped to the range [0, 1], but the actual values of the tensor are in the range [0.12, 0.73]:

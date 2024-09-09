@@ -11,11 +11,11 @@ __version__ = "0.1.0"  # single source of version truth
 __all__ = ["set_printoptions", "viz", "pride"]
 
 
-# show deprecation warning for t.viz() syntax
+# show deprecation warning for t.viz() usage
 # delete everything below this line after version 0.2.0
 
 
-def _viz_is_deprecated():
+def _viz_is_deprecated(self):
     raise DeprecationWarning("The tensor.viz() function has been deprecated. Please use tensorhue.viz(tensor) instead.")
 
 
