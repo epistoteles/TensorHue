@@ -6,18 +6,16 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 from tensorhue.viz import viz
-from tensorhue.connectors._torch import _tensorhue_to_numpy_torch
-from tensorhue.connectors._jax import _tensorhue_to_numpy_jax
-from tensorhue.connectors._tensorflow import _tensorhue_to_numpy_tensorflow
+from tensorhue.converters import _tensor_to_numpy_torch, _tensor_to_numpy_jax, _tensor_to_numpy_tensorflow
 
 
 @pytest.mark.parametrize(
     "tensor",
     [
         np.ones(10),
-        _tensorhue_to_numpy_torch(torch.ones(10)),
-        _tensorhue_to_numpy_jax(jnp.ones(10)),
-        _tensorhue_to_numpy_tensorflow(tf.ones(10)),
+        _tensor_to_numpy_torch(torch.ones(10)),
+        _tensor_to_numpy_jax(jnp.ones(10)),
+        _tensor_to_numpy_tensorflow(tf.ones(10)),
     ],
 )
 def test_1d_tensor(tensor, capsys):
@@ -33,9 +31,9 @@ def test_1d_tensor(tensor, capsys):
     "tensor",
     [
         np.ones((10, 10)),
-        _tensorhue_to_numpy_torch(torch.ones(10, 10)),
-        _tensorhue_to_numpy_jax(jnp.ones((10, 10))),
-        _tensorhue_to_numpy_tensorflow(tf.ones((10, 10))),
+        _tensor_to_numpy_torch(torch.ones(10, 10)),
+        _tensor_to_numpy_jax(jnp.ones((10, 10))),
+        _tensor_to_numpy_tensorflow(tf.ones((10, 10))),
     ],
 )
 def test_2d_tensor(tensor, capsys):
@@ -51,9 +49,9 @@ def test_2d_tensor(tensor, capsys):
     "tensor",
     [
         np.ones(200),
-        _tensorhue_to_numpy_torch(torch.ones(200)),
-        _tensorhue_to_numpy_jax(jnp.ones(200)),
-        _tensorhue_to_numpy_tensorflow(tf.ones(200)),
+        _tensor_to_numpy_torch(torch.ones(200)),
+        _tensor_to_numpy_jax(jnp.ones(200)),
+        _tensor_to_numpy_tensorflow(tf.ones(200)),
     ],
 )
 def test_1d_tensor_too_wide(tensor, capsys):
@@ -69,9 +67,9 @@ def test_1d_tensor_too_wide(tensor, capsys):
     "tensor",
     [
         np.ones((10, 200)),
-        _tensorhue_to_numpy_torch(torch.ones(10, 200)),
-        _tensorhue_to_numpy_jax(jnp.ones((10, 200))),
-        _tensorhue_to_numpy_tensorflow(tf.ones((10, 200))),
+        _tensor_to_numpy_torch(torch.ones(10, 200)),
+        _tensor_to_numpy_jax(jnp.ones((10, 200))),
+        _tensor_to_numpy_tensorflow(tf.ones((10, 200))),
     ],
 )
 def test_2d_tensor_too_wide(tensor, capsys):
@@ -87,9 +85,9 @@ def test_2d_tensor_too_wide(tensor, capsys):
     "tensor",
     [
         np.ones(10),
-        _tensorhue_to_numpy_torch(torch.ones(10)),
-        _tensorhue_to_numpy_jax(jnp.ones(10)),
-        _tensorhue_to_numpy_tensorflow(tf.ones(10)),
+        _tensor_to_numpy_torch(torch.ones(10)),
+        _tensor_to_numpy_jax(jnp.ones(10)),
+        _tensor_to_numpy_tensorflow(tf.ones(10)),
     ],
 )
 def test_no_legend(tensor, capsys):

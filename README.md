@@ -10,6 +10,9 @@
   <img src="https://img.shields.io/badge/contributions-welcome-orange.svg">
 </div>
 
+> [!IMPORTANT]  
+> t.viz() has been deprecated. Please use tensorhue.viz(t) instead.
+
 > [!WARNING]
 > TensorHue is currently in alpha. Expect bugs. We appreciate any feedback!
 
@@ -33,42 +36,35 @@ Install TensorHue with pip:
 pip install tensorhue
 ```
 
-Using TensorHue is easy, simply import TensorHue *after* importing the library of your choice:
+Using TensorHue is easy, simply import TensorHue together with the library of your choice:
 
 ```python
 import torch
 import tensorhue
 ```
 
+Or, alternatively:
+
+```python
+from tensorhue import viz
+```
+
 That's it! You can now visualize any tensor by calling .viz() on it in your Python console:
 
 ```python
 t = torch.rand(20,20)
-t.viz() ✅
-```
-
-You can also visualize them like this:
-
-```python
 tensorhue.viz(t) ✅
-```
-
-Numpy arrays can only be visualized with `tensorhue.viz(...)` (because np.ndarray is immutable):
-
-```python
-np.array([1,2,3]).viz() ❌
-tensorhue.viz(np.array([1,2,3])) ✅
 ```
 
 ## Images
 
-Pillow images can be visualized in RGB using `.viz()`:
+Pillow images can be visualized in RGB and other color modes:
 
 ```python
 from torchvision.datasets import CIFAR10
 dataset = CIFAR10('.', dowload=True)
 img = dataset[0][0]
-img.viz() ✅
+tensorhue.viz(img) ✅
 ```
 
 <div align="center">
@@ -78,7 +74,7 @@ img.viz() ✅
 By default, images get downscaled to the size of your terminal, but you can make them even smaller if you want:
 
 ```python
-img.viz(max_size=(40,40)) ✅
+tensorhue.viz(img, max_size=(40,40)) ✅
 ```
 
 ## Custom colors
@@ -92,7 +88,7 @@ from matplotlib import colormaps
 cs = ColorScheme(colormap=colormaps['inferno'],
                  true_color=(255,255,255),
                  false_color=(0,0,0))
-t.viz(cs)
+tensorhue.viz(t, colorscheme=cs) ✅
 ```
 
 Alternatively, you can overwrite the default ColorScheme:
@@ -110,13 +106,13 @@ By default, TensorHue normalizes numerical values between 0 and 1 and then appli
 from matplotlib.colors import CenteredNorm
 cs = ColorScheme(colormap=colormaps['bwr'],
                  normalize=CenteredNorm(vcenter=0))
-t.viz(cs)
+tensorhue.viz(t, colorscheme=cs) ✅
 ```
 
 You can also specify the normalization range manually, for example when you want to visualize a confusion matrix where colors should be mapped to the range [0, 1], but the actual values of the tensor are in the range [0.12, 0.73]:
 
 ```
-conf_matrix.viz(vmin=0, vmax=1, scale=3)
+tensorhue.viz(conf_matrix, vmin=0, vmax=1, scale=3)
 ```
 
 <div align="center">

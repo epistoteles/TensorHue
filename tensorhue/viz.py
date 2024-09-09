@@ -6,27 +6,28 @@ from rich.console import Console
 import numpy as np
 from tensorhue.colors import ColorScheme
 from tensorhue._print_opts import PRINT_OPTS
-from tensorhue.connectors._numpy import NumpyArrayWrapper
+from tensorhue.converters import tensor_to_numpy, mro_to_strings
 
 
 def viz(tensor, **kwargs):
-    if isinstance(tensor, np.ndarray):
-        tensor = NumpyArrayWrapper(tensor)
-        tensor.viz(**kwargs)  # pylint: disable=no-member
-    else:
-        try:
-            tensor.viz(**kwargs)
-        except Exception as e:
-            raise NotImplementedError(
-                f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
-            ) from e
+    try:
+        mro_strings = mro_to_strings(tensor.__class__.__mro__)
+        if "PIL.Image.Image" in mro_strings:
+            _viz_image(tensor, **kwargs)
+        else:
+            _viz(tensor, **kwargs)
+    except Exception as e:
+        raise NotImplementedError(
+            f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
+        ) from e
 
 
-def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int = 1, **kwargs):
+def _viz(tensor, colorscheme: ColorScheme = None, legend: bool = True, scale: int = 1, **kwargs):
     """
     Prints a tensor using colored Unicode art representation.
 
     Args:
+        tensor (Any): The tensor to be visualized.
         colorscheme (ColorScheme, optional): The color scheme to use.
             Defaults to None, which means the global default color scheme is used.
         legend (bool, optional): Whether or not to include legend information (like the shape)
@@ -39,20 +40,20 @@ def _viz(self, colorscheme: ColorScheme = None, legend: bool = True, scale: int 
     if colorscheme is None:
         colorscheme = PRINT_OPTS.colorscheme
 
-    self = self._tensorhue_to_numpy()
-    shape = self.shape
-    ndim = self.ndim
+    np_array = tensor_to_numpy(tensor)
+    shape = np_array.shape
+    ndim = np_array.ndim
 
     if ndim == 1:
-        self = self[np.newaxis, :]
+        np_array = np_array[np.newaxis, :]
     elif ndim > 2:
         raise NotImplementedError(
             "Visualization of tensors with more than 2 dimensions is under development. Please slice them for now."
         )
 
-    self = np.repeat(np.repeat(self, scale, axis=1), scale, axis=0)
+    np_array = np.repeat(np.repeat(np_array, scale, axis=1), scale, axis=0)
 
-    result_lines = _viz_2d(self, colorscheme, **kwargs)
+    result_lines = _viz_2d(np_array, colorscheme, **kwargs)
 
     if legend:
         result_lines.append(f"[italic]shape = {shape}[/]")
@@ -131,11 +132,12 @@ def _construct_unicode_string(colors_left: np.ndarray, colors_right: np.ndarray)
     return result_lines
 
 
-def _viz_image(self, legend: bool = False, thumbnail: bool = True, max_size: tuple[int, int] = None):
+def _viz_image(image, legend: bool = False, thumbnail: bool = True, max_size: tuple[int, int] = None):
     """
     A special case of _viz that does not use the ColorScheme but instead treats the tensor as RGB or greyscale values directly.
 
     Args:
+        image (PIL.Image.Image): The image to visualize
         legend (bool, optional): Whether or not to include legend information (like the shape)
         thumbnail (bool, optional): Scales down the image size to a thumbnail that fits into the terminal window
         max_size (tuple[int, int], optional): The maximum size (width, height) to which the image gets downsized to. Only used if thumbnail=True.
@@ -143,16 +145,16 @@ def _viz_image(self, legend: bool = False, thumbnail: bool = True, max_size: tup
 
     raise_max_size_warning = max_size and not thumbnail
 
-    size = self.size
-    mode = self.mode
+    size = image.size
+    mode = image.mode
     if max_size is None:
         terminal_size = get_terminal_size()
     else:
         terminal_size = os.terminal_size(max_size)
     max_size = (terminal_size.columns, (terminal_size.lines - 1) * 2)
-    self = self._tensorhue_to_numpy(thumbnail=thumbnail, max_size=max_size)
+    image = tensor_to_numpy(image, thumbnail=thumbnail, max_size=max_size)
 
-    result_lines = _viz_2d(self)
+    result_lines = _viz_2d(image)
 
     if legend:
         result_lines.append(f"[italic]size = {size}[/], [italic]mode = {mode}[/]")
