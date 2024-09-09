@@ -6,22 +6,7 @@ from rich.console import Console
 import numpy as np
 from tensorhue.colors import ColorScheme
 from tensorhue._print_opts import PRINT_OPTS
-
-# from tensorhue.connectors._numpy import NumpyArrayWrapper
 from tensorhue.converters import tensor_to_numpy, mro_to_strings
-
-
-# def viz(tensor, **kwargs):
-#     if isinstance(tensor, np.ndarray):
-#         tensor = NumpyArrayWrapper(tensor)
-#         tensor.viz(**kwargs)  # pylint: disable=no-member
-#     else:
-#         try:
-#             tensor.viz(**kwargs)
-#         except Exception as e:
-#             raise NotImplementedError(
-#                 f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
-#             ) from e
 
 
 def viz(tensor, **kwargs):
@@ -42,6 +27,7 @@ def _viz(tensor, colorscheme: ColorScheme = None, legend: bool = True, scale: in
     Prints a tensor using colored Unicode art representation.
 
     Args:
+        tensor (Any): The tensor to be visualized.
         colorscheme (ColorScheme, optional): The color scheme to use.
             Defaults to None, which means the global default color scheme is used.
         legend (bool, optional): Whether or not to include legend information (like the shape)
@@ -151,6 +137,7 @@ def _viz_image(image, legend: bool = False, thumbnail: bool = True, max_size: tu
     A special case of _viz that does not use the ColorScheme but instead treats the tensor as RGB or greyscale values directly.
 
     Args:
+        image (PIL.Image.Image): The image to visualize
         legend (bool, optional): Whether or not to include legend information (like the shape)
         thumbnail (bool, optional): Scales down the image size to a thumbnail that fits into the terminal window
         max_size (tuple[int, int], optional): The maximum size (width, height) to which the image gets downsized to. Only used if thumbnail=True.

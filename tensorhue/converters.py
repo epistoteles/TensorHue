@@ -8,7 +8,8 @@ def tensor_to_numpy(tensor, **kwargs) -> np.ndarray:
     Converts a tensor of unknown type to a numpy array.
 
     Args:
-        tensor: The tensor to be converted.
+        tensor (Any): The tensor to be converted.
+        **kwargs: Additional keyword arguments that are passed to the underlying converter functions.
 
     Returns:
         The converted numpy array.
@@ -17,18 +18,17 @@ def tensor_to_numpy(tensor, **kwargs) -> np.ndarray:
 
     if "numpy.ndarray" in mro_strings:
         return tensor
-    elif "torch.Tensor" in mro_strings:
+    if "torch.Tensor" in mro_strings:
         return _tensor_to_numpy_torch(tensor, **kwargs)
-    elif "tensorflow.python.types.core.Tensor" in mro_strings:
+    if "tensorflow.python.types.core.Tensor" in mro_strings:
         return _tensor_to_numpy_tensorflow(tensor, **kwargs)
-    elif "jaxlib.xla_extension.DeviceArray" in mro_strings:
+    if "jaxlib.xla_extension.DeviceArray" in mro_strings:
         return _tensor_to_numpy_jax(tensor, **kwargs)
-    elif "PIL.Image.Image" in mro_strings:
+    if "PIL.Image.Image" in mro_strings:
         return _tensor_to_numpy_pillow(tensor, **kwargs)
-    else:
-        raise NotImplementedError(
-            f"Conversion of tensor of type {type(tensor)} is not supported. Please raise an issue of you think this is a bug or should be implemented."
-        )
+    raise NotImplementedError(
+        f"Conversion of tensor of type {type(tensor)} is not supported. Please raise an issue of you think this is a bug or should be implemented."
+    )
 
 
 def mro_to_strings(mro) -> list[str]:
@@ -36,7 +36,7 @@ def mro_to_strings(mro) -> list[str]:
     Converts the __mro__ of a class to a list of module.class_name strings.
 
     Args:
-        mro: The __mro__ to be converted.
+        mro (tuple[type]): The __mro__ to be converted.
 
     Returns:
         The converted list of strings.
