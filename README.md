@@ -13,7 +13,7 @@
 > [!IMPORTANT]  
 > t.viz() has been deprecated. Please use tensorhue.viz(t) instead.
 
-> [!WARNING]
+> [!NOTE]
 > TensorHue is currently in alpha. We appreciate any feedback!
 
 # TensorHue - tensors, visualized
