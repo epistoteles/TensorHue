@@ -100,7 +100,7 @@ tensorhue.set_printoptions(colorscheme=cs)
 
 ## Advanced colormaps and normalization
 
-By default, TensorHue normalizes numerical values between 0 and 1 and then applies the matplotlib colormap. If you want to use diverging colormaps such as `coolwarm` or `bwr` and the value 0 to be mapped to the middle of the colormap, you need to specify the normailzer, e.g. `matplotlib.colors.CenteredNorm`:
+By default, TensorHue normalizes numerical values between 0 and 1 and then applies the matplotlib colormap. If you want to use diverging colormaps such as `coolwarm` or `bwr` and the value 0 to be mapped to the middle of the colormap, you need to specify the normalizer, e.g. `matplotlib.colors.CenteredNorm`:
 
 ```python
 from matplotlib.colors import CenteredNorm
