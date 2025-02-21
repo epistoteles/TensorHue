@@ -18,7 +18,7 @@ def viz(tensor, **kwargs):
             _viz(tensor, **kwargs)
     except Exception as e:
         raise NotImplementedError(
-            f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them. Alternatively, check if you imported tensorhue *after* your other library."
+            f"TensorHue currently does not support type {type(tensor)}. Please raise an issue if you want to visualize them.."
         ) from e
 
 
